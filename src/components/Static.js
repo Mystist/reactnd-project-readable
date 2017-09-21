@@ -1,6 +1,12 @@
 import React from 'react'
 
-function PostList() {
+const state = {
+   categories: [],
+   posts: [],
+   comments: []
+}
+
+export function PostList() {
   return (
     <div className="post-list">
       <div className="container">
@@ -67,7 +73,7 @@ function PostList() {
   )
 }
 
-function PostDetail() {
+export function PostDetail() {
   return (
     <div className="post-detail">
       <div className="container">
@@ -193,5 +199,3 @@ function PostDetail() {
     </div>
   )
 }
-
-export { PostList, PostDetail }
