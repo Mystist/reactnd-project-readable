@@ -1,25 +1,10 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { fetchCategories, fetchPosts } from '../actions'
 
 class PostList extends Component {
-  fetch() {
-    const { match } = this.props
-  
-    this.props.fetchCategories()
-    this.props.fetchPosts(match.params.category)
-  }
-  componentDidMount() {
-    this.fetch()
-  }
-  componentDidUpdate(prevProps) {
-    if (prevProps.location.hash === this.props.location.hash && prevProps.location.pathname !== this.props.location.pathname) {
-      this.fetch()
-    }
-  }
   render() {
     const { match, categories, posts } = this.props
+    const currentPosts = posts.filter(post => !match.params.category || post.category === match.params.category)
 
     return (
       <div className="post-list">
@@ -46,9 +31,9 @@ class PostList extends Component {
           </div>
         </div>
         <div className="container">
-          {posts.length > 0 && (
+          {currentPosts.length > 0 && (
             <ul className="list-unstyled">
-              {posts.map(post => (
+              {currentPosts.map(post => (
                 <li key={post.id} className="border border-top-0 border-left-0 border-right-0 my-3">
                   <h6 className="text-secondary">
                     <small>{post.category}</small>
@@ -62,7 +47,7 @@ class PostList extends Component {
                     <small>5 Comments</small>
                     <div className="votes">
                       <span className="oi oi-caret-top mx-3"></span>
-                      <small>25109</small>
+                      <small>{post.voteScore}</small>
                       <span className="oi oi-caret-bottom mx-3"></span>
                     </div>
                   </h6>
@@ -76,19 +61,4 @@ class PostList extends Component {
   }
 }
 
-// const mapStateToProps = ({ categories }) => ({
-//   categories
-// })
-const mapStateToProps = (state) => {
-  return {
-    categories: state.categories,
-    posts: state.posts
-  }
-}
-
-const mapDispatchToProps = dispatch => ({
-  fetchCategories: () => dispatch(fetchCategories()),
-  fetchPosts: (category) => dispatch(fetchPosts(category))
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(PostList)
+export default PostList
