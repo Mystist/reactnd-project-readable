@@ -3,6 +3,7 @@ import * as api from '../utils/api';
 export const RECEIVE_CATEGORIES = 'RECEIVE_CATEGORIES'
 export const RECEIVE_POSTS = 'RECEIVE_POSTS'
 export const RECEIVE_COMMENTS = 'RECEIVE_COMMENTS'
+export const RECEIVE_POST = 'RECEIVE_POST'
 
 // export const receiveCategories = (categories) => {
 //   return {
@@ -35,7 +36,7 @@ export const fetchPosts = () => dispatch => (
 
 export const receiveComments = comments => ({ type: RECEIVE_COMMENTS, comments })
 
-export const fetchComments = (posts) => dispatch => {
+export const fetchComments = posts => dispatch => {
   const defers = []
   posts.forEach(post => {
     defers.push(api.fetchCommentsByPost(post))
@@ -44,4 +45,12 @@ export const fetchComments = (posts) => dispatch => {
     const comments = results.reduce((accumulator, currentValue) => accumulator.concat(currentValue))
     dispatch(receiveComments(comments))
   })
+}
+
+export const receivePost = post => ({ type: RECEIVE_POST, post })
+
+export const fetchPost = (post, option) => dispatch => {
+  api
+    .fetchPost(post, option)
+    .then(post => dispatch(receivePost(post)))
 }

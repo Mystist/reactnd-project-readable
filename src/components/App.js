@@ -4,6 +4,7 @@ import { Route, withRouter } from 'react-router-dom'
 import { fetchCategories, fetchPosts, fetchComments } from '../actions'
 
 import PostList from './PostList'
+import PostDetail from './PostDetail'
 import * as Static from './Static'
 
 class App extends Component {
@@ -19,25 +20,15 @@ class App extends Component {
         <Route path="/static/post-list" component={Static.PostList} />
         <Route path="/static/post-detail" component={Static.PostDetail} />
 
-        <Route exact path="/:category?" render={({ match }) => (
-          <PostList categories={this.props.categories} posts={this.props.posts} comments={this.props.comments} match={match} />
-        )} />
+        <Route exact path="/:category?" component={PostList} />
+        <Route exact path="/posts/:id" component={PostDetail} />
       </div>
     )
   }
 }
 
-// const mapStateToProps = (state) => {
-//   return {
-//     categories: state.categories,
-//     posts: state.posts,
-//     comments: status.comments
-//   }
-// }
-const mapStateToProps = ({ categories, posts, comments }) => ({
-  categories,
-  posts,
-  comments
+const mapStateToProps = ({ posts }) => ({
+  posts
 })
 
 const mapDispatchToProps = dispatch => ({

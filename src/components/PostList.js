@@ -1,14 +1,12 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-import * as moment from 'moment'
+import { connect } from 'react-redux'
+
+import Post from './Post'
 
 class PostList extends Component {
   state = {
     order: 'votes'
-  }
-
-  getCommentsFromPost = (post) => {
-    return this.props.comments.filter(comment => comment.parentId === post.id)
   }
 
   changeOrder = (order) => {
@@ -56,22 +54,7 @@ class PostList extends Component {
             <ul className="list-unstyled">
               {currentPosts.map(post => (
                 <li key={post.id} className="border border-top-0 border-left-0 border-right-0 my-3">
-                  <h6 className="text-secondary">
-                    <small>{post.category.toUpperCase()}</small>
-                    <span className="mx-2">&middot;</span>
-                    <small>{moment(post.timestamp).format('YYYY-MM-DD HH:mm:ss')}</small>
-                    <span className="mx-2">&middot;</span>
-                    <small>{post.author}</small>
-                  </h6>
-                  <a href=""><h5 className="my-3">{post.title}</h5></a>
-                  <h6 className="text-secondary d-flex justify-content-between">
-                    <small>{this.getCommentsFromPost(post).length} Comments</small>
-                    <div className="votes">
-                      <span className="oi oi-caret-top mx-3"></span>
-                      <small>{post.voteScore}</small>
-                      <span className="oi oi-caret-bottom mx-3"></span>
-                    </div>
-                  </h6>
+                  <Post post={post} />
                 </li>
               ))}
             </ul>
@@ -82,4 +65,9 @@ class PostList extends Component {
   }
 }
 
-export default PostList
+const mapStateToProps = ({ categories, posts }) => ({
+  categories,
+  posts
+})
+
+export default connect(mapStateToProps)(PostList)
