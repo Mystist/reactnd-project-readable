@@ -27,7 +27,7 @@ class PostList extends Component {
     const { match, categories, posts } = this.props
     const currentPosts = posts.filter(post => !match.params.category || post.category === match.params.category).sort((a, b) => {
       if (this.state.order === 'votes') {
-        return b.voteScore- a.voteScore
+        return b.voteScore - a.voteScore
       } else {
         return b.timestamp - a.timestamp
       }

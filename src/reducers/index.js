@@ -4,7 +4,8 @@ import {
   RECEIVE_CATEGORIES,
   RECEIVE_POSTS,
   RECEIVE_COMMENTS,
-  RECEIVE_POST
+  RECEIVE_POST,
+  RECEIVE_COMMENT
 } from '../actions'
 
 const categories = (state = [], action) => {
@@ -33,6 +34,10 @@ const comments = (state = [], action) => {
   switch (action.type) {
     case RECEIVE_COMMENTS :
       return action.comments || state
+    case RECEIVE_COMMENT :
+      return state.find(comment => comment.id === action.comment.id) ? 
+      state.map(comment => comment.id === action.comment.id ? action.comment : comment) :
+      state.concat(action.comment)
     default:
       return state
   }

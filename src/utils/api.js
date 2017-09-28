@@ -26,3 +26,13 @@ export const fetchPost = (post, option) => {
       .then(res => res.json())
   }
 }
+
+export const fetchComment = (comment, option) => {
+  if (!option) {
+    return fetch(`${baseUrl}/comments/${comment.id}`, { headers })
+      .then(res => res.json())
+  } else {
+    return fetch(`${baseUrl}/comments/${comment.id}`, { headers: Object.assign({}, headers, { 'Content-Type': 'application/json' }), method: 'POST', body: JSON.stringify({ option }) })
+      .then(res => res.json())
+  }
+}

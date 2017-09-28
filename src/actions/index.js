@@ -4,22 +4,10 @@ export const RECEIVE_CATEGORIES = 'RECEIVE_CATEGORIES'
 export const RECEIVE_POSTS = 'RECEIVE_POSTS'
 export const RECEIVE_COMMENTS = 'RECEIVE_COMMENTS'
 export const RECEIVE_POST = 'RECEIVE_POST'
+export const RECEIVE_COMMENT = 'RECEIVE_COMMENT'
 
-// export const receiveCategories = (categories) => {
-//   return {
-//     type: RECEIVE_CATEGORIES,
-//     categories: categories
-//   }
-// }
 export const receiveCategories = categories => ({ type: RECEIVE_CATEGORIES, categories })
 
-// export const fetchCategories = () => {
-//   return (dispatch) => {
-//     api
-//       .fetchCategories()
-//       .then(categories => dispatch(receiveCategories(categories)))
-//   }
-// }
 export const fetchCategories = () => dispatch => (
   api
     .fetchCategories()
@@ -53,4 +41,12 @@ export const fetchPost = (post, option) => dispatch => (
   api
     .fetchPost(post, option)
     .then(post => dispatch(receivePost(post)))
+)
+
+export const receiveComment = comment => ({ type: RECEIVE_COMMENT, comment })
+
+export const fetchComment = (comment, option) => dispatch => (
+  api
+    .fetchComment(comment, option)
+    .then(comment => dispatch(receiveComment(comment)))
 )
