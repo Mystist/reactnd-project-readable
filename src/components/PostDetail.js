@@ -1,9 +1,18 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
+import { fetchPost, fetchComments } from '../actions'
 import Post from './Post'
 
 class PostDetail extends Component {
+  componentDidMount() {
+    const { match } = this.props
+
+    this.props
+      .fetchPost({id: match.params.id})
+      .then(action => this.props.fetchComments([action.post]))
+  }
+
   render() {
     const { match, posts } = this.props
     const post = posts.find(post => post.id === match.params.id)
@@ -123,4 +132,9 @@ const mapStateToProps = ({ posts }) => ({
   posts
 })
 
-export default connect(mapStateToProps)(PostDetail)
+const mapDispatchToProps = dispatch => ({
+  fetchPost: post => dispatch(fetchPost(post)),
+  fetchComments: posts => dispatch(fetchComments(posts))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(PostDetail)

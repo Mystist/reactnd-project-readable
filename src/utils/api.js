@@ -18,6 +18,11 @@ export const fetchCommentsByPost = post => {
 }
 
 export const fetchPost = (post, option) => {
-  return fetch(`${baseUrl}/posts/${post.id}`, { headers: Object.assign({}, headers, { 'Content-Type': 'application/json' }), method: 'POST', body: JSON.stringify({ option }) })
-    .then(res => res.json())
+  if (!option) {
+    return fetch(`${baseUrl}/posts/${post.id}`, { headers })
+      .then(res => res.json())
+  } else {
+    return fetch(`${baseUrl}/posts/${post.id}`, { headers: Object.assign({}, headers, { 'Content-Type': 'application/json' }), method: 'POST', body: JSON.stringify({ option }) })
+      .then(res => res.json())
+  }
 }

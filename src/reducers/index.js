@@ -21,7 +21,9 @@ const posts = (state = [], action) => {
     case RECEIVE_POSTS :
       return action.posts || state
     case RECEIVE_POST :
-      return state.map(post => post.id === action.post.id ? action.post : post)
+      return state.find(post => post.id === action.post.id) ? 
+      state.map(post => post.id === action.post.id ? action.post : post) :
+      state.concat(action.post)
     default:
       return state
   }

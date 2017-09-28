@@ -49,8 +49,8 @@ export const fetchComments = posts => dispatch => {
 
 export const receivePost = post => ({ type: RECEIVE_POST, post })
 
-export const fetchPost = (post, option) => dispatch => {
+export const fetchPost = (post, option) => dispatch => (
   api
     .fetchPost(post, option)
     .then(post => dispatch(receivePost(post)))
-}
+)

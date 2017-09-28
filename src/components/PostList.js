@@ -1,12 +1,20 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
+import { fetchCategories, fetchPosts, fetchComments } from '../actions'
 
 import Post from './Post'
 
 class PostList extends Component {
   state = {
     order: 'votes'
+  }
+
+  componentDidMount() {
+    this.props.fetchCategories()
+    this.props
+      .fetchPosts()
+      .then(() => this.props.fetchComments(this.props.posts))
   }
 
   changeOrder = (order) => {
@@ -70,4 +78,10 @@ const mapStateToProps = ({ categories, posts }) => ({
   posts
 })
 
-export default connect(mapStateToProps)(PostList)
+const mapDispatchToProps = dispatch => ({
+  fetchCategories: () => dispatch(fetchCategories()),
+  fetchPosts: () => dispatch(fetchPosts()),
+  fetchComments: posts => dispatch(fetchComments(posts))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(PostList)
