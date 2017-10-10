@@ -3,6 +3,7 @@ import { Route } from 'react-router-dom'
 
 import PostList from './PostList'
 import PostDetail from './PostDetail'
+
 import * as Static from './Static'
 
 class App extends Component {

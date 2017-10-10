@@ -19,8 +19,12 @@ class Post extends Component {
           <small>{post.category.toUpperCase()}</small>
           <span className="mx-2">&middot;</span>
           <small>{moment(post.timestamp).format('YYYY-MM-DD HH:mm:ss')}</small>
-          <span className="mx-2">&middot;</span>
-          <small>{post.author}</small>
+          {post.author && (
+            <span>
+              <span className="mx-2">&middot;</span>
+              <small>{post.author}</small>
+            </span>
+          )}
         </h6>
         <h5 className="my-3">
           {isDetailView ?

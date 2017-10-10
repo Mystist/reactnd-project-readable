@@ -18,11 +18,14 @@ export const fetchCommentsByPost = post => {
 }
 
 export const fetchPost = (post, option) => {
-  if (!option) {
-    return fetch(`${baseUrl}/posts/${post.id}`, { headers })
+  if (post.isNew) {
+    return fetch(`${baseUrl}/posts`, { headers: Object.assign({}, headers, { 'Content-Type': 'application/json' }), method: 'POST', body: JSON.stringify(post) })
+      .then(res => res.json())
+  } else if (option) {
+    return fetch(`${baseUrl}/posts/${post.id}`, { headers: Object.assign({}, headers, { 'Content-Type': 'application/json' }), method: 'POST', body: JSON.stringify({ option }) })
       .then(res => res.json())
   } else {
-    return fetch(`${baseUrl}/posts/${post.id}`, { headers: Object.assign({}, headers, { 'Content-Type': 'application/json' }), method: 'POST', body: JSON.stringify({ option }) })
+    return fetch(`${baseUrl}/posts/${post.id}`, { headers })
       .then(res => res.json())
   }
 }
