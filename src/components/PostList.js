@@ -1,38 +1,14 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
-import uuid from 'uuid/v4'
 
-import { fetchCategories, fetchPosts, fetchComments, fetchPost } from '../actions'
+import { fetchCategories, fetchPosts, fetchComments } from '../actions'
 import Post from './Post'
-
-const validate = values => {
-  const errors = {}
-  if (!values.title) {
-    errors.title = 'Required'
-  } else if (values.title.length < 10) {
-    errors.title = 'Title shoule be at least 10 words'
-  }
-
-  if (!values.body) {
-    errors.body = 'Required'
-  }
-
-  return errors
-}
-
-const Invalid = ({ error }) => (
-  <span className="text-danger">* {error}</span>
-)
+import NewPostModal from './NewPostModal'
 
 class PostList extends Component {
   state = {
-    order: 'votes',
-    title: '',
-    body: '',
-    author: '',
-    category: 'react',
-    hasTouched: false
+    order: 'date'
   }
 
   componentDidMount() {
@@ -48,31 +24,6 @@ class PostList extends Component {
     })
   }
 
-  updateState = (name, value) => {
-    this.setState({ [name]: value })
-  }
-
-  save = () => {
-    this.setState({ hasTouched: true })
-
-    if (Object.keys(validate(this.state)).length === 0) {
-      this.props.fetchPost({...this.state,
-        id: uuid(),
-        timestamp: Date.now(),
-        isNew: true
-      }).then(() => {
-        this.setState({
-          title: '',
-          body: '',
-          author: '',
-          category: 'react',
-          hasTouched: false
-        })
-        this.refs.newPostModalClose.click()
-      })
-    }
-  }
-
   render() {
     const { match, categories, posts } = this.props
     const currentPosts = posts.filter(post => !match.params.category || post.category === match.params.category).sort((a, b) => {
@@ -82,8 +33,6 @@ class PostList extends Component {
         return b.timestamp - a.timestamp
       }
     })
-
-    const errors = validate(this.state)
 
     return (
       <div className="post-list">
@@ -105,11 +54,11 @@ class PostList extends Component {
                   Order By: {this.state.order}
                 </button>
                 <div className="dropdown-menu">
-                  <a className={`dropdown-item ${this.state.order === 'votes' ? 'active' : ''}`} onClick={() => this.changeOrder('votes')}>Votes</a>
                   <a className={`dropdown-item ${this.state.order === 'date' ? 'active' : ''}`} onClick={() => this.changeOrder('date')}>Date</a>
+                  <a className={`dropdown-item ${this.state.order === 'votes' ? 'active' : ''}`} onClick={() => this.changeOrder('votes')}>Votes</a>
                 </div>
               </div>
-              <button type="button" className="btn btn-outline-primary" data-toggle="modal" data-target="#newPostModal">New Post</button>
+              <button type="button" className="btn btn-outline-primary" data-toggle="modal" data-target="#postModal">New Post</button>
             </div>
             <ul className="list-unstyled">
               {currentPosts.map(post => (
@@ -120,53 +69,8 @@ class PostList extends Component {
             </ul>
           </div>
         )}
-        {categories.length > 0 && (
-          <form>
-            <div className="modal fade" id="newPostModal" tabIndex="-1">
-              <div className="modal-dialog">
-                <div className="modal-content">
-                  <div className="modal-header">
-                    <h5 className="modal-title">New Post</h5>
-                    <button type="button" className="close" data-dismiss="modal">
-                    </button>
-                  </div>
-                  <div className="modal-body">
-                    <div className="form-group">
-                      <label>Title:</label>
-                      <input type="text" className="form-control" name="title" value={this.state.title} onChange={e => this.updateState(e.currentTarget.name, e.currentTarget.value)} />
-                      {this.state.hasTouched && errors.title && (
-                        <Invalid error={errors.title} />
-                      )}
-                    </div>
-                    <div className="form-group">
-                      <label>Body:</label>
-                      <textarea className="form-control" name="body" value={this.state.body} onChange={e => this.updateState(e.currentTarget.name, e.currentTarget.value)}></textarea>
-                      {this.state.hasTouched && errors.body && (
-                        <Invalid error={errors.body} />
-                      )}
-                    </div>
-                    <div className="form-group">
-                      <label>Author: (optional)</label>
-                      <input type="text" className="form-control" name="author" value={this.state.author} onChange={e => this.updateState(e.currentTarget.name, e.currentTarget.value)} />
-                    </div>
-                    <div className="form-group">
-                      <label>Category:</label>
-                      <select className="form-control" name="category" value={this.state.category} onChange={e => this.updateState(e.currentTarget.name, e.currentTarget.value)}>
-                        {categories.map(category => (
-                          <option key={category.name} value={category.name}>{category.name.toUpperCase()}</option>
-                        ))}
-                      </select>
-                    </div>
-                  </div>
-                  <div className="modal-footer">
-                    <button type="button" className="btn btn-secondary" data-dismiss="modal" ref="newPostModalClose">Close</button>
-                    <button type="button" className="btn btn-primary" onClick={this.save}>Submit</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </form>
-        )}
+
+        <NewPostModal />
       </div>
     )
   }
@@ -180,8 +84,7 @@ const mapStateToProps = ({ categories, posts }) => ({
 const mapDispatchToProps = dispatch => ({
   fetchCategories: () => dispatch(fetchCategories()),
   fetchPosts: () => dispatch(fetchPosts()),
-  fetchComments: posts => dispatch(fetchComments(posts)),
-  fetchPost: post => dispatch(fetchPost(post))
+  fetchComments: posts => dispatch(fetchComments(posts))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(PostList)

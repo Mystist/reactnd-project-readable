@@ -17,12 +17,13 @@ export const fetchCommentsByPost = post => {
     .then(res => res.json())
 }
 
-export const fetchPost = (post, option) => {
+export const fetchPost = (post, body) => {
   if (post.isNew) {
-    return fetch(`${baseUrl}/posts`, { headers: Object.assign({}, headers, { 'Content-Type': 'application/json' }), method: 'POST', body: JSON.stringify(post) })
+    return fetch(`${baseUrl}/posts`, { headers: {...headers, 'Content-Type': 'application/json'}, method: 'POST', body: JSON.stringify(body) })
       .then(res => res.json())
-  } else if (option) {
-    return fetch(`${baseUrl}/posts/${post.id}`, { headers: Object.assign({}, headers, { 'Content-Type': 'application/json' }), method: 'POST', body: JSON.stringify({ option }) })
+  } else if (body) {
+    const method = body.option ? 'POST' : 'PUT'
+    return fetch(`${baseUrl}/posts/${post.id}`, { headers: {...headers, 'Content-Type': 'application/json'}, method, body: JSON.stringify(body) })
       .then(res => res.json())
   } else {
     return fetch(`${baseUrl}/posts/${post.id}`, { headers })
@@ -30,12 +31,12 @@ export const fetchPost = (post, option) => {
   }
 }
 
-export const fetchComment = (comment, option) => {
-  if (!option) {
+export const fetchComment = (comment, body) => {
+  if (!body) {
     return fetch(`${baseUrl}/comments/${comment.id}`, { headers })
       .then(res => res.json())
   } else {
-    return fetch(`${baseUrl}/comments/${comment.id}`, { headers: Object.assign({}, headers, { 'Content-Type': 'application/json' }), method: 'POST', body: JSON.stringify({ option }) })
+    return fetch(`${baseUrl}/comments/${comment.id}`, { headers: {...headers, 'Content-Type': 'application/json'}, method: 'POST', body: JSON.stringify(body) })
       .then(res => res.json())
   }
 }

@@ -23,8 +23,8 @@ const posts = (state = [], action) => {
       return action.posts || state
     case RECEIVE_POST :
       return state.find(post => post.id === action.post.id) ? 
-      state.map(post => post.id === action.post.id ? action.post : post) :
-      state.concat(action.post)
+        state.map(post => post.id === action.post.id ? action.post : post) :
+        state.concat(action.post)
     default:
       return state
   }
@@ -36,8 +36,8 @@ const comments = (state = [], action) => {
       return action.comments || state
     case RECEIVE_COMMENT :
       return state.find(comment => comment.id === action.comment.id) ? 
-      state.map(comment => comment.id === action.comment.id ? action.comment : comment) :
-      state.concat(action.comment)
+        state.map(comment => comment.id === action.comment.id ? action.comment : comment) :
+        state.concat(action.comment)
     default:
       return state
   }

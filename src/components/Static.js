@@ -88,9 +88,18 @@ export function PostDetail() {
         <p>
           Everyone says so after all.
         </p>
-        <h6 className="text-secondary d-flex justify-content-between">
-          <small>5 Comments</small>
-          <div className="votes">
+        <h6 className="text-secondary d-flex justify-content-end">
+          <small className="mr-auto">5 Comments</small>
+          <div className="btn-group">
+            <button type="button" className="btn btn-sm btn-outline-secondary">Reply</button>
+            <button type="button" className="btn btn-sm btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown">
+            </button>
+            <div className="dropdown-menu">
+              <a className="dropdown-item" href="#">Edit</a>
+              <a className="dropdown-item" href="#">Delete</a>
+            </div>
+          </div>
+          <div className="votes align-self-center">
             <span className="oi oi-caret-top mx-3"></span>
             <small>25109</small>
             <span className="oi oi-caret-bottom mx-3"></span>
@@ -133,7 +142,7 @@ export function PostDetail() {
                   <a className="dropdown-item" href="#">Delete</a>
                 </div>
               </div>
-              <div className="votes">
+              <div className="votes align-self-center">
                 <span className="oi oi-caret-top mx-3"></span>
                 <small>25109</small>
                 <span className="oi oi-caret-bottom mx-3"></span>
@@ -159,7 +168,7 @@ export function PostDetail() {
                   <a className="dropdown-item" href="#">Delete</a>
                 </div>
               </div>
-              <div className="votes">
+              <div className="votes align-self-center">
                 <span className="oi oi-caret-top mx-3"></span>
                 <small>25109</small>
                 <span className="oi oi-caret-bottom mx-3"></span>
@@ -185,7 +194,7 @@ export function PostDetail() {
                       <a className="dropdown-item" href="#">Delete</a>
                     </div>
                   </div>
-                  <div className="votes">
+                  <div className="votes align-self-center">
                     <span className="oi oi-caret-top mx-3"></span>
                     <small>25109</small>
                     <span className="oi oi-caret-bottom mx-3"></span>

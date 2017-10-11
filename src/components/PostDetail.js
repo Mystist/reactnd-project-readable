@@ -7,7 +7,7 @@ import Post from './Post'
 
 class PostDetail extends Component {
   state = {
-    order: 'votes'
+    order: 'date'
   }
 
   componentDidMount() {
@@ -51,8 +51,8 @@ class PostDetail extends Component {
                   Order By: {this.state.order}
                 </button>
                 <div className="dropdown-menu">
-                  <a className={`dropdown-item ${this.state.order === 'votes' ? 'active' : ''}`} onClick={() => this.changeOrder('votes')}>Votes</a>
                   <a className={`dropdown-item ${this.state.order === 'date' ? 'active' : ''}`} onClick={() => this.changeOrder('date')}>Date</a>
+                  <a className={`dropdown-item ${this.state.order === 'votes' ? 'active' : ''}`} onClick={() => this.changeOrder('votes')}>Votes</a>
                 </div>
               </div>
               <button type="button" className="btn btn-sm btn-outline-primary">Write a Comment</button>
@@ -77,10 +77,10 @@ class PostDetail extends Component {
                         <a className="dropdown-item" href="#">Delete</a>
                       </div>
                     </div>
-                    <div className="votes">
-                      <span className="oi oi-caret-top mx-3" onClick={() => this.props.fetchComment(comment, 'upVote')}></span>
+                    <div className="votes align-self-center">
+                      <span className="oi oi-caret-top mx-3" onClick={() => this.props.fetchComment(comment, {option: 'upVote'})}></span>
                       <small>{comment.voteScore}</small>
-                      <span className="oi oi-caret-bottom mx-3" onClick={() => this.props.fetchComment(comment, 'downVote')}></span>
+                      <span className="oi oi-caret-bottom mx-3" onClick={() => this.props.fetchComment(comment, {option: 'downVote'})}></span>
                     </div>
                   </h6>
                 </li>
@@ -101,7 +101,7 @@ const mapStateToProps = ({ posts, comments }) => ({
 const mapDispatchToProps = dispatch => ({
   fetchPost: post => dispatch(fetchPost(post)),
   fetchComments: posts => dispatch(fetchComments(posts)),
-  fetchComment: (comment, option) => dispatch(fetchComment(comment, option))
+  fetchComment: (comment, body) => dispatch(fetchComment(comment, body))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(PostDetail)

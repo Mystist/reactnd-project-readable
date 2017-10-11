@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 
 import { fetchPost } from '../actions'
+import EditPostModal from './EditPostModal'
 
 class Post extends Component {
   getCommentsFromPost = (post) => {
@@ -35,14 +36,29 @@ class Post extends Component {
         {isDetailView && (
           <p>{post.body}</p>
         )}
-        <h6 className="text-secondary d-flex justify-content-between">
-          <small>{this.getCommentsFromPost(post).length} Comments</small>
-          <div className="votes">
-            <span className="oi oi-caret-top mx-3" onClick={() => this.props.fetchPost(post, 'upVote')}></span>
+        <h6 className="text-secondary d-flex justify-content-end">
+          <small className="mr-auto">{this.getCommentsFromPost(post).length} Comments</small>
+          {isDetailView && (
+            <div className="btn-group mx-4">
+              <button type="button" className="btn btn-sm btn-outline-secondary">Reply</button>
+              <button type="button" className="btn btn-sm btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown">
+              </button>
+              <div className="dropdown-menu">
+                <a className="dropdown-item" href="javascript:;" data-toggle="modal" data-target="#postModal">Edit</a>
+                <a className="dropdown-item" href="#">Delete</a>
+              </div>
+            </div>
+          )}
+          <div className="votes align-self-center">
+            <span className="oi oi-caret-top mx-3" onClick={() => this.props.fetchPost(post, {option: 'upVote'})}></span>
             <small>{post.voteScore}</small>
-            <span className="oi oi-caret-bottom mx-3" onClick={() => this.props.fetchPost(post, 'downVote')}></span>
+            <span className="oi oi-caret-bottom mx-3" onClick={() => this.props.fetchPost(post, {option: 'downVote'})}></span>
           </div>
         </h6>
+
+        {isDetailView && (
+          <EditPostModal post={post} />
+        )}
       </div>
     )
   }
@@ -53,7 +69,7 @@ const mapStateToProps = ({ comments }) => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  fetchPost: (post, option) => dispatch(fetchPost(post, option))
+  fetchPost: (post, body) => dispatch(fetchPost(post, body))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Post)
