@@ -1,20 +1,15 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import uuid from 'uuid/v4'
 
 import PostModal from './PostModal'
 
-class NewPostModal extends Component {
-  render() {
-    const post = {
-      id: uuid(),
-      timestamp: Date.now(),
-      isNew: true
-    }
-
-    return (
-      <PostModal post={post} />
-    )
+const mapStateToProps = () => ({
+  post: {
+    id: uuid(),
+    timestamp: Date.now(),
+    isNew: true
   }
-}
+})
 
-export default NewPostModal
+export default connect(mapStateToProps)(PostModal)
