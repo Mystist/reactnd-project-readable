@@ -46,10 +46,11 @@ class PostList extends Component {
             </nav>
           </div>
         )}
-        {currentPosts.length > 0 && (
-          <div className="container">
-            <div className="d-flex justify-content-between my-4">
-              <div className="dropdown">
+
+        <div className="container">
+          <div className="d-flex justify-content-end my-4">
+            {currentPosts.length > 0 && (
+              <div className="dropdown mr-auto">
                 <button className="btn btn-light dropdown-toggle" type="button" data-toggle="dropdown">
                   Order By: {this.state.order}
                 </button>
@@ -58,8 +59,10 @@ class PostList extends Component {
                   <a className={`dropdown-item ${this.state.order === 'votes' ? 'active' : ''}`} onClick={() => this.changeOrder('votes')}>Votes</a>
                 </div>
               </div>
-              <button type="button" className="btn btn-outline-primary" data-toggle="modal" data-target="#postModal">New Post</button>
-            </div>
+            )}
+            <button type="button" className="btn btn-outline-primary" data-toggle="modal" data-target="#postModal">New Post</button>
+          </div>
+          {currentPosts.length > 0 && (
             <ul className="list-unstyled">
               {currentPosts.map(post => (
                 <li key={post.id} className="border border-top-0 border-left-0 border-right-0 my-3">
@@ -67,8 +70,8 @@ class PostList extends Component {
                 </li>
               ))}
             </ul>
-          </div>
-        )}
+          )}
+        </div>
 
         <NewPostModal />
       </div>

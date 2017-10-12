@@ -18,13 +18,18 @@ class PostDetail extends Component {
 
     this.props
       .fetchPost({id: match.params.id})
-      .then(action => this.props.fetchComments([action.post]))
+      .then(post => this.props.fetchComments([post]))
   }
 
   changeOrder = (order) => {
     this.setState({
       order
     })
+  }
+
+  onPostDeleted = () => {
+    const { history } = this.props
+    history.push('/')
   }
 
   render() {
@@ -42,7 +47,7 @@ class PostDetail extends Component {
       <div className="post-detail">
         {post && (
           <div className="container">
-            <Post post={post} isDetailView={true} />
+            <Post post={post} isDetailView={true} onPostDeleted={this.onPostDeleted} />
             <hr />
           </div>
         )}

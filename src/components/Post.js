@@ -12,7 +12,7 @@ class Post extends Component {
   }
 
   render() {
-    const { post, isDetailView } = this.props
+    const { post, isDetailView, onPostDeleted } = this.props
 
     return (
       <div className="post-container">
@@ -44,7 +44,7 @@ class Post extends Component {
               <button type="button" className="btn btn-sm btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown">
               </button>
               <div className="dropdown-menu">
-                <a className="dropdown-item" href="#">Delete</a>
+                <a className="dropdown-item" href="javascript:;" onClick={() => this.props.fetchPost({ ...post, isDelete: true }).then(onPostDeleted())}>Delete</a>
               </div>
             </div>
           )}

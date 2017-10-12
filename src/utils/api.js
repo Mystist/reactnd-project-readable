@@ -25,6 +25,9 @@ export const fetchPost = (post, body) => {
     const method = body.option ? 'POST' : 'PUT'
     return fetch(`${baseUrl}/posts/${post.id}`, { headers: {...headers, 'Content-Type': 'application/json'}, method, body: JSON.stringify(body) })
       .then(res => res.json())
+  } else if (post.isDelete) {
+    return fetch(`${baseUrl}/posts/${post.id}`, { headers, method: 'DELETE' })
+      .then(res => res.json())
   } else {
     return fetch(`${baseUrl}/posts/${post.id}`, { headers })
       .then(res => res.json())

@@ -5,6 +5,7 @@ import {
   RECEIVE_POSTS,
   RECEIVE_COMMENTS,
   RECEIVE_POST,
+  DELETE_POST,
   RECEIVE_COMMENT,
   DELETE_COMMENT
 } from '../actions'
@@ -26,6 +27,8 @@ const posts = (state = [], action) => {
       return state.find(post => post.id === action.post.id) ? 
         state.map(post => post.id === action.post.id ? action.post : post) :
         state.concat(action.post)
+    case DELETE_POST :
+      return state.filter(post => post.id !== action.post.id)
     default :
       return state
   }
