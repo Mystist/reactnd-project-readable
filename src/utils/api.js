@@ -32,11 +32,15 @@ export const fetchPost = (post, body) => {
 }
 
 export const fetchComment = (comment, body) => {
-  if (!body) {
-    return fetch(`${baseUrl}/comments/${comment.id}`, { headers })
+  if (comment.isNew) {
+    return fetch(`${baseUrl}/comments`, { headers: {...headers, 'Content-Type': 'application/json'}, method: 'POST', body: JSON.stringify(body) })
+      .then(res => res.json())
+  } else if (body) {
+    const method = body.option ? 'POST' : 'PUT'
+    return fetch(`${baseUrl}/comments/${comment.id}`, { headers: {...headers, 'Content-Type': 'application/json'}, method, body: JSON.stringify(body) })
       .then(res => res.json())
   } else {
-    return fetch(`${baseUrl}/comments/${comment.id}`, { headers: {...headers, 'Content-Type': 'application/json'}, method: 'POST', body: JSON.stringify(body) })
+    return fetch(`${baseUrl}/comments/${comment.id}`, { headers })
       .then(res => res.json())
   }
 }

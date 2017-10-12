@@ -40,11 +40,10 @@ class Post extends Component {
           <small className="mr-auto">{this.getCommentsFromPost(post).length} Comments</small>
           {isDetailView && (
             <div className="btn-group mx-4">
-              <button type="button" className="btn btn-sm btn-outline-secondary">Reply</button>
+              <button type="button" className="btn btn-sm btn-outline-secondary" data-toggle="modal" data-target="#postModal">Edit</button>
               <button type="button" className="btn btn-sm btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown">
               </button>
               <div className="dropdown-menu">
-                <a className="dropdown-item" href="javascript:;" data-toggle="modal" data-target="#postModal">Edit</a>
                 <a className="dropdown-item" href="#">Delete</a>
               </div>
             </div>

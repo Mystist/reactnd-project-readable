@@ -37,8 +37,8 @@ class PostModal extends Component {
 
   componentDidMount() {
     if (!this.props.post.isNew) {
-      const { title, body, author, category } = this.props.post
-      this.setState({title, body, author, category})
+      const { post: {title, body, author, category} } = this.props
+      this.setState({ title, body, author, category })
     }
   }
 
@@ -47,7 +47,7 @@ class PostModal extends Component {
   }
 
   save = () => {
-    const post = this.props.post
+    const { post } = this.props
     this.setState({ hasTouched: true })
 
     if (Object.keys(validate(this.state)).length === 0) {
@@ -85,7 +85,7 @@ class PostModal extends Component {
                 </div>
                 <div className="form-group">
                   <label>Body:</label>
-                  <textarea className="form-control" name="body" value={this.state.body} onChange={e => this.updateState(e.currentTarget.name, e.currentTarget.value)}></textarea>
+                  <textarea className="form-control" name="body" value={this.state.body} onChange={e => this.updateState(e.currentTarget.name, e.currentTarget.value)} />
                   {this.state.hasTouched && errors.body && (
                     <Invalid error={errors.body} />
                   )}

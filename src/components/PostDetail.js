@@ -1,13 +1,16 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import * as moment from 'moment'
+import uuid from 'uuid/v4'
 
 import { fetchPost, fetchComments, fetchComment } from '../actions'
 import Post from './Post'
+import CommentModal from './CommentModal'
 
 class PostDetail extends Component {
   state = {
-    order: 'date'
+    order: 'date',
+    selectedComment: {}
   }
 
   componentDidMount() {
@@ -43,10 +46,10 @@ class PostDetail extends Component {
             <hr />
           </div>
         )}
-        {currentComments.length > 0 && (
-          <div className="container">
-            <div className="d-flex justify-content-between my-4">
-              <div className="dropdown">
+        <div className="container">
+          <div className="d-flex justify-content-end my-4">
+            {currentComments.length > 0 && (
+              <div className="dropdown mr-auto">
                 <button className="btn btn-light dropdown-toggle" type="button" data-toggle="dropdown">
                   Order By: {this.state.order}
                 </button>
@@ -55,22 +58,36 @@ class PostDetail extends Component {
                   <a className={`dropdown-item ${this.state.order === 'votes' ? 'active' : ''}`} onClick={() => this.changeOrder('votes')}>Votes</a>
                 </div>
               </div>
-              <button type="button" className="btn btn-sm btn-outline-primary">Write a Comment</button>
-            </div>
+            )}
+            {post && (
+              <button type="button" className="btn btn-sm btn-outline-primary" data-toggle="modal" data-target="#commentModal" 
+                onClick={() => this.setState({ selectedComment: { id: uuid(), timestamp: Date.now(), parentId: post.id, isNew: true } })}>
+                Write a Comment
+              </button>
+            )}
+          </div>
+          {currentComments.length > 0 && (
             <ul className="list-unstyled">
               {currentComments.map(comment => (
                 <li key={comment.id}>
                   <h6 className="text-secondary">
-                    <small>{comment.author}</small>
-                    <span className="mx-2">&middot;</span>
+                    {comment.author && (
+                      <span>
+                        <small>{comment.author}</small>
+                        <span className="mx-2">&middot;</span>
+                      </span>
+                    )}
                     <small>{moment(comment.timestamp).format('YYYY-MM-DD HH:mm:ss')}</small>
                   </h6>
                   <p>
                     {comment.body}
                   </p>
                   <h6 className="text-secondary d-flex justify-content-end">
-                    <div className="btn-group">
-                      <button type="button" className="btn btn-sm btn-outline-secondary">Edit</button>
+                    <div className="btn-group mx-4">
+                      <button type="button" className="btn btn-sm btn-outline-secondary" data-toggle="modal" data-target="#commentModal"
+                        onClick={() => this.setState({ selectedComment: comment })}>
+                        Edit
+                      </button>
                       <button type="button" className="btn btn-sm btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown">
                       </button>
                       <div className="dropdown-menu">
@@ -86,8 +103,10 @@ class PostDetail extends Component {
                 </li>
               ))}
             </ul>
-          </div>
-        )}
+          )}
+        </div>
+
+        <CommentModal comment={this.state.selectedComment} />
       </div>
     )
   }
