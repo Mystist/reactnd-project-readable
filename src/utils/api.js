@@ -39,6 +39,9 @@ export const fetchComment = (comment, body) => {
     const method = body.option ? 'POST' : 'PUT'
     return fetch(`${baseUrl}/comments/${comment.id}`, { headers: {...headers, 'Content-Type': 'application/json'}, method, body: JSON.stringify(body) })
       .then(res => res.json())
+  } else if (comment.isDelete) {
+    return fetch(`${baseUrl}/comments/${comment.id}`, { headers, method: 'DELETE' })
+      .then(res => res.json())
   } else {
     return fetch(`${baseUrl}/comments/${comment.id}`, { headers })
       .then(res => res.json())

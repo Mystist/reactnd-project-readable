@@ -5,6 +5,7 @@ export const RECEIVE_POSTS = 'RECEIVE_POSTS'
 export const RECEIVE_COMMENTS = 'RECEIVE_COMMENTS'
 export const RECEIVE_POST = 'RECEIVE_POST'
 export const RECEIVE_COMMENT = 'RECEIVE_COMMENT'
+export const DELETE_COMMENT = 'DELETE_COMMENT'
 
 export const receiveCategories = categories => ({ type: RECEIVE_CATEGORIES, categories })
 
@@ -25,11 +26,11 @@ export const fetchPosts = () => dispatch => (
 export const receiveComments = comments => ({ type: RECEIVE_COMMENTS, comments })
 
 export const fetchComments = posts => dispatch => {
-  const defers = []
+  const promises = []
   posts.forEach(post => {
-    defers.push(api.fetchCommentsByPost(post))
+    promises.push(api.fetchCommentsByPost(post))
   })
-  Promise.all(defers).then(results => {
+  Promise.all(promises).then(results => {
     const comments = results.reduce((accumulator, currentValue) => accumulator.concat(currentValue))
     dispatch(receiveComments(comments))
   })
@@ -37,16 +38,23 @@ export const fetchComments = posts => dispatch => {
 
 export const receivePost = post => ({ type: RECEIVE_POST, post })
 
-export const fetchPost = (post, option) => dispatch => (
+export const fetchPost = (post, body) => dispatch => (
   api
-    .fetchPost(post, option)
+    .fetchPost(post, body)
     .then(post => dispatch(receivePost(post)))
 )
 
 export const receiveComment = comment => ({ type: RECEIVE_COMMENT, comment })
+export const deleteComment = comment => ({ type: DELETE_COMMENT, comment })
 
-export const fetchComment = (comment, option) => dispatch => (
-  api
-    .fetchComment(comment, option)
-    .then(comment => dispatch(receiveComment(comment)))
-)
+export const fetchComment = (comment, body) => dispatch => {
+  const promise = api.fetchComment(comment, body)
+
+  if (comment.isDelete) {
+    promise.then(comment => dispatch(deleteComment(comment)))
+  } else {
+    promise.then(comment => dispatch(receiveComment(comment)))
+  }
+
+  return promise
+}

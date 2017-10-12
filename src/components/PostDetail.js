@@ -91,7 +91,7 @@ class PostDetail extends Component {
                       <button type="button" className="btn btn-sm btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown">
                       </button>
                       <div className="dropdown-menu">
-                        <a className="dropdown-item" href="#">Delete</a>
+                        <a className="dropdown-item" href="javascript:;" onClick={() => this.props.fetchComment({ ...comment, isDelete: true })}>Delete</a>
                       </div>
                     </div>
                     <div className="votes align-self-center">
