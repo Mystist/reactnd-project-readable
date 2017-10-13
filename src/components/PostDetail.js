@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import * as moment from 'moment'
 import uuid from 'uuid/v4'
@@ -45,6 +46,9 @@ class PostDetail extends Component {
 
     return (
       <div className="post-detail">
+        <div className="container">
+          <Link to="/" className='btn btn-outline-secondary'>Back</Link>
+        </div>
         {post && (
           <div className="container">
             <Post post={post} isDetailView={true} onPostDeleted={this.onPostDeleted} />

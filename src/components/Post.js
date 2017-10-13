@@ -16,7 +16,7 @@ class Post extends Component {
 
     return (
       <div className="post-container">
-        <h6 className="text-secondary">
+        <h6 className="text-secondary my-4">
           <small>{post.category.toUpperCase()}</small>
           <span className="mx-2">&middot;</span>
           <small>{moment(post.timestamp).format('YYYY-MM-DD HH:mm:ss')}</small>
