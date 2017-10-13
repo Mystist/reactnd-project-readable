@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import * as moment from 'moment'
 import uuid from 'uuid/v4'
 
-import { fetchPost, fetchComments, fetchComment } from '../actions'
+import * as actions from '../actions'
 import Post from './Post'
 import CommentModal from './CommentModal'
 
@@ -122,10 +122,4 @@ const mapStateToProps = ({ posts, comments }) => ({
   comments
 })
 
-const mapDispatchToProps = dispatch => ({
-  fetchPost: post => dispatch(fetchPost(post)),
-  fetchComments: posts => dispatch(fetchComments(posts)),
-  fetchComment: (comment, body) => dispatch(fetchComment(comment, body))
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(PostDetail)
+export default connect(mapStateToProps, actions)(PostDetail)

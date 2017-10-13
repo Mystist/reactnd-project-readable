@@ -121,8 +121,4 @@ const mapStateToProps = ({ categories }) => ({
   categories
 })
 
-const mapDispatchToProps = dispatch => ({
-  fetchPost: (post, body) => dispatch(fetchPost(post, body))
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(PostModal)
+export default connect(mapStateToProps, { fetchPost })(PostModal)

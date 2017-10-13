@@ -29,12 +29,8 @@ class CommentModal extends Component {
 
   componentDidUpdate(prevProps) {
     if (prevProps.comment.id !== this.props.comment.id) {
-      if (this.props.comment.isNew) {
-        this.setState(initialState)
-      } else {
-        const { comment: {body, author} } = this.props
-        this.setState({ body, author })
-      }
+      const { comment: {body, author} } = this.props
+      this.setState(this.props.comment.isNew ? initialState : { body, author })
     }
   }
 
@@ -92,8 +88,4 @@ class CommentModal extends Component {
   }
 }
 
-const mapDispatchToProps = dispatch => ({
-  fetchComment: (comment, body) => dispatch(fetchComment(comment, body))
-})
-
-export default connect(null, mapDispatchToProps)(CommentModal)
+export default connect(null, { fetchComment })(CommentModal)

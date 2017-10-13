@@ -67,8 +67,4 @@ const mapStateToProps = ({ comments }) => ({
   comments
 })
 
-const mapDispatchToProps = dispatch => ({
-  fetchPost: (post, body) => dispatch(fetchPost(post, body))
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(Post)
+export default connect(mapStateToProps, { fetchPost })(Post)

@@ -18,8 +18,4 @@ class EditPostModal extends Component {
   }
 }
 
-const mapDispatchToProps = dispatch => ({
-  fetchCategories: () => dispatch(fetchCategories())
-})
-
-export default connect(null, mapDispatchToProps)(EditPostModal)
+export default connect(null, { fetchCategories })(EditPostModal)

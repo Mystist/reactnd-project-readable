@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 
-import { fetchCategories, fetchPosts, fetchComments } from '../actions'
+import * as actions from '../actions'
 import Post from './Post'
 import NewPostModal from './NewPostModal'
 
@@ -84,10 +84,4 @@ const mapStateToProps = ({ categories, posts }) => ({
   posts
 })
 
-const mapDispatchToProps = dispatch => ({
-  fetchCategories: () => dispatch(fetchCategories()),
-  fetchPosts: () => dispatch(fetchPosts()),
-  fetchComments: posts => dispatch(fetchComments(posts))
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(PostList)
+export default connect(mapStateToProps, actions)(PostList)
