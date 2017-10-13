@@ -1,14 +1,7 @@
-import * as api from '../utils/api';
+import * as api from '../utils/api'
+import * as types from './types'
 
-export const RECEIVE_CATEGORIES = 'RECEIVE_CATEGORIES'
-export const RECEIVE_POSTS = 'RECEIVE_POSTS'
-export const RECEIVE_COMMENTS = 'RECEIVE_COMMENTS'
-export const RECEIVE_POST = 'RECEIVE_POST'
-export const DELETE_POST = 'DELETE_POST'
-export const RECEIVE_COMMENT = 'RECEIVE_COMMENT'
-export const DELETE_COMMENT = 'DELETE_COMMENT'
-
-export const receiveCategories = categories => ({ type: RECEIVE_CATEGORIES, categories })
+export const receiveCategories = categories => ({ type: types.RECEIVE_CATEGORIES, categories })
 
 export const fetchCategories = () => dispatch => (
   api
@@ -16,7 +9,7 @@ export const fetchCategories = () => dispatch => (
     .then(categories => dispatch(receiveCategories(categories)))
 )
 
-export const receivePosts = posts => ({ type: RECEIVE_POSTS, posts })
+export const receivePosts = posts => ({ type: types.RECEIVE_POSTS, posts })
 
 export const fetchPosts = () => dispatch => (
   api
@@ -24,7 +17,7 @@ export const fetchPosts = () => dispatch => (
     .then(posts => dispatch(receivePosts(posts)))
 )
 
-export const receiveComments = comments => ({ type: RECEIVE_COMMENTS, comments })
+export const receiveComments = comments => ({ type: types.RECEIVE_COMMENTS, comments })
 
 export const fetchComments = posts => dispatch => {
   const promises = []
@@ -37,8 +30,8 @@ export const fetchComments = posts => dispatch => {
   })
 }
 
-export const receivePost = post => ({ type: RECEIVE_POST, post })
-export const deletePost = post => ({ type: DELETE_POST, post })
+export const receivePost = post => ({ type: types.RECEIVE_POST, post })
+export const deletePost = post => ({ type: types.DELETE_POST, post })
 
 export const fetchPost = (post, body) => dispatch => {
   const promise = api.fetchPost(post, body)
@@ -52,8 +45,8 @@ export const fetchPost = (post, body) => dispatch => {
   return promise
 }
 
-export const receiveComment = comment => ({ type: RECEIVE_COMMENT, comment })
-export const deleteComment = comment => ({ type: DELETE_COMMENT, comment })
+export const receiveComment = comment => ({ type: types.RECEIVE_COMMENT, comment })
+export const deleteComment = comment => ({ type: types.DELETE_COMMENT, comment })
 
 export const fetchComment = (comment, body) => dispatch => {
   const promise = api.fetchComment(comment, body)
