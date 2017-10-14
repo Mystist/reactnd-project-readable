@@ -6,11 +6,13 @@ import uuid from 'uuid/v4'
 
 import * as actions from '../actions'
 import Post from './Post'
+import PostModal from './PostModal'
 import CommentModal from './CommentModal'
 
 class PostDetail extends Component {
   state = {
     order: 'date',
+    selectedPost: {},
     selectedComment: {}
   }
 
@@ -22,10 +24,12 @@ class PostDetail extends Component {
       .then(post => this.props.fetchComments([post]))
   }
 
-  changeOrder = (order) => {
-    this.setState({
-      order
-    })
+  changeOrder = order => {
+    this.setState({ order })
+  }
+
+  onPostEdit = post => {
+    this.setState({ selectedPost: post })
   }
 
   onPostDeleted = () => {
@@ -51,7 +55,7 @@ class PostDetail extends Component {
         </div>
         {post && (
           <div className="container">
-            <Post post={post} isDetailView={true} onPostDeleted={this.onPostDeleted} />
+            <Post post={post} isDetailView={true} onPostEdit={this.onPostEdit} onPostDeleted={this.onPostDeleted} />
             <hr />
           </div>
         )}
@@ -115,6 +119,7 @@ class PostDetail extends Component {
           )}
         </div>
 
+        <PostModal post={this.state.selectedPost} />
         <CommentModal comment={this.state.selectedComment} />
       </div>
     )

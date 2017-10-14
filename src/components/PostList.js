@@ -1,14 +1,16 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
+import uuid from 'uuid/v4'
 
 import * as actions from '../actions'
 import Post from './Post'
-import NewPostModal from './NewPostModal'
+import PostModal from './PostModal'
 
 class PostList extends Component {
   state = {
-    order: 'date'
+    order: 'date',
+    selectedPost: {}
   }
 
   componentDidMount() {
@@ -18,10 +20,12 @@ class PostList extends Component {
       .then(() => this.props.fetchComments(this.props.posts))
   }
 
-  changeOrder = (order) => {
-    this.setState({
-      order
-    })
+  changeOrder = order => {
+    this.setState({ order })
+  }
+
+  onPostEdit = post => {
+    this.setState({ selectedPost: post })
   }
 
   render() {
@@ -60,20 +64,23 @@ class PostList extends Component {
                 </div>
               </div>
             )}
-            <button type="button" className="btn btn-outline-primary" data-toggle="modal" data-target="#postModal">New Post</button>
+            <button type="button" className="btn btn-outline-primary" data-toggle="modal" data-target="#postModal"
+              onClick={() => this.setState({ selectedPost: { id: uuid(), timestamp: Date.now(), isNew: true } })}>
+              New Post
+            </button>
           </div>
           {currentPosts.length > 0 && (
             <ul className="list-unstyled">
               {currentPosts.map(post => (
                 <li key={post.id} className="border border-top-0 border-left-0 border-right-0 my-3">
-                  <Post post={post} />
+                  <Post post={post} onPostEdit={this.onPostEdit} />
                 </li>
               ))}
             </ul>
           )}
         </div>
 
-        <NewPostModal />
+        <PostModal post={this.state.selectedPost} />
       </div>
     )
   }

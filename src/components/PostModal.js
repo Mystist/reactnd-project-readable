@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import { fetchPost } from '../actions'
+import { fetchCategories, fetchPost } from '../actions'
 
 const initialState = {
   title: '',
@@ -36,9 +36,13 @@ class PostModal extends Component {
   }
 
   componentDidMount() {
-    if (!this.props.post.isNew) {
+    this.props.fetchCategories()
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.post.id !== this.props.post.id) {
       const { post: {title, body, author, category} } = this.props
-      this.setState({ title, body, author, category })
+      this.setState(this.props.post.isNew ? initialState : { title, body, author, category })
     }
   }
 
@@ -53,9 +57,6 @@ class PostModal extends Component {
     if (Object.keys(validate(this.state)).length === 0) {
       const body = post.isNew ? {...post, ...this.state} : this.state
       this.props.fetchPost(post, body).then(() => {
-        if (post.isNew) {
-          this.setState(initialState)
-        }
         this.setState({ hasTouched: false })
         this.refs.postModalClose.click()
       })
@@ -121,4 +122,4 @@ const mapStateToProps = ({ categories }) => ({
   categories
 })
 
-export default connect(mapStateToProps, { fetchPost })(PostModal)
+export default connect(mapStateToProps, { fetchCategories, fetchPost })(PostModal)

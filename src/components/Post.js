@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 
 import { fetchPost } from '../actions'
-import EditPostModal from './EditPostModal'
 
 class Post extends Component {
   getCommentsFromPost = (post) => {
@@ -12,7 +11,7 @@ class Post extends Component {
   }
 
   render() {
-    const { post, isDetailView, onPostDeleted } = this.props
+    const { post, isDetailView, onPostEdit, onPostDeleted } = this.props
 
     return (
       <div className="post-container">
@@ -38,26 +37,20 @@ class Post extends Component {
         )}
         <h6 className="text-secondary d-flex justify-content-end">
           <small className="mr-auto">{this.getCommentsFromPost(post).length} Comments</small>
-          {isDetailView && (
-            <div className="btn-group mx-4">
-              <button type="button" className="btn btn-sm btn-outline-secondary" data-toggle="modal" data-target="#postModal">Edit</button>
-              <button type="button" className="btn btn-sm btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown">
-              </button>
-              <div className="dropdown-menu">
-                <a className="dropdown-item" href="javascript:;" onClick={() => this.props.fetchPost({ ...post, isDelete: true }).then(onPostDeleted())}>Delete</a>
-              </div>
+          <div className="btn-group mx-4">
+            <button type="button" className="btn btn-sm btn-outline-secondary" data-toggle="modal" data-target="#postModal" onClick={() => onPostEdit(post)}>Edit</button>
+            <button type="button" className="btn btn-sm btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown">
+            </button>
+            <div className="dropdown-menu">
+              <a className="dropdown-item" href="javascript:;" onClick={() => this.props.fetchPost({ ...post, isDelete: true }).then(onPostDeleted ? onPostDeleted() : null)}>Delete</a>
             </div>
-          )}
+          </div>
           <div className="votes align-self-center">
             <span className="oi oi-caret-top mx-3" onClick={() => this.props.fetchPost(post, {option: 'upVote'})}></span>
             <small>{post.voteScore}</small>
             <span className="oi oi-caret-bottom mx-3" onClick={() => this.props.fetchPost(post, {option: 'downVote'})}></span>
           </div>
         </h6>
-
-        {isDetailView && (
-          <EditPostModal post={post} />
-        )}
       </div>
     )
   }
